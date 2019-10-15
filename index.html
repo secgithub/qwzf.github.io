@@ -144,7 +144,8 @@
         <div class="article-feed">
             <p>
                 前言之前没有对SQL报错注入详细总结过，总结一下。
-12种SQL报错注入1、通过floor报错,注入语句如下:and (select 1 from (select count(*),concat(user(),floor(rand(0)*2))x from information_schema...
+SQL报错注入利用前提: 页面上没有显示位，但是需要输出 SQL 语句执行错误信息。比如 mysql_error()优点: 不需要显示位缺点: 需要输出 mysql_error( )的报错信息
+12种SQL报错注入语句1、通过floor报错,...
             </p>
         </div>
       
