@@ -34,7 +34,7 @@
 <meta property="og:image" content="http://img-blog.csdnimg.cn/20191112202404343.jpg">
 <meta property="og:image" content="http://img-blog.csdnimg.cn/20191112205838419.jpg">
 <meta property="og:image" content="http://img-blog.csdnimg.cn/20191112210605106.jpg">
-<meta property="og:updated_time" content="2019-11-12T15:30:30.124Z">
+<meta property="og:updated_time" content="2019-11-12T15:33:42.381Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="sqli-labs攻关4(Adv)(Less-23_Less-38)">
 <meta name="twitter:description" content="前言总结完最常见的GET型和POST型的联合查询注入、报错注入、SQL盲注，以及简单POST注入。于是继续总结二次注入、GET型过滤敏感关键字注入、WAF绕过注入、宽字节注入。 一、二次注入(Less-24)二次注入：攻击者构造的恶意数据存储到数据库后，恶意数据被读取并进入到SQL查询语句所导致的注入。二次注入需要具备的两个条件：  用户向数据库插入恶意语句(即使后端对语句进行了转义，如mysql">
@@ -233,8 +233,7 @@
 <blockquote>
 <p>addslashes、mysql_real_escape_string、mysql_escape_string以及后面在高版本被去除的magic_quote_gpc</p>
 </blockquote>
-<p><strong>绕过方法</strong><br>因为宽字节注入主要是吃掉 <code>\</code> ，所以一般时候加一个 <code>%df</code> 这种就可以吃掉，其实加三个<code>%df</code>也可以吃掉，只要是奇数个<code>%df</code>即可。</p>
-<h4 id="Less-32-绕过addslashes"><a href="#Less-32-绕过addslashes" class="headerlink" title="Less-32(绕过addslashes())"></a>Less-32(绕过addslashes())</h4><p>测试后发现单引号双引号都不会报错,并且被<code>\</code>转义了，所以可以用宽字节注入<code>%df&#39;</code>报错。<br><code>&#39;</code>被加上反斜杠<code>\</code>，变成了 <code>%df\’</code>，其中<code>\</code>的十六进制是 <code>%5C</code> 所以 <code>%df\’ =%df%5c%27</code>，如果程序的默认字符集是GBK等宽字节字符集，则MySQL用GBK的编码时，会认为 <code>%df%5c</code> 是一个宽字符，也就是<code>運&#39;</code>，即<code>%df\’ = %df%5c%27=運&#39;</code></p>
+<p><strong>绕过方法</strong><br>因为宽字节注入主要是吃掉 <code>\</code> ，所以一般时候加一个 <code>%df</code> 这种就可以吃掉，其实加三个<code>%df</code>也可以吃掉，只要是奇数个<code>%df</code>即可。<br><strong>Less-32(绕过addslashes())</strong><br>测试后发现单引号双引号都不会报错,并且被<code>\</code>转义了，所以可以用宽字节注入<code>%df&#39;</code>报错。<br><code>&#39;</code>被加上反斜杠<code>\</code>，变成了 <code>%df\’</code>，其中<code>\</code>的十六进制是 <code>%5C</code> 所以 <code>%df\’ =%df%5c%27</code>，如果程序的默认字符集是GBK等宽字节字符集，则MySQL用GBK的编码时，会认为 <code>%df%5c</code> 是一个宽字符，也就是<code>運&#39;</code>，即<code>%df\’ = %df%5c%27=運&#39;</code></p>
 <p>然后再测试，发现是单引号闭合。于是试了下爆库<br><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">id=0%df' union <span class="keyword">select</span> <span class="number">1</span>,<span class="number">2</span>,<span class="keyword">database</span>() <span class="comment">--+</span></span><br></pre></td></tr></table></figure></p>
 <p><img src="http://img-blog.csdnimg.cn/20191112205838419.jpg" alt="在这里插入图片描述"><br><strong>#### Less-33</strong><br>跟less-32多大区别，宽字节注入即可。<br><strong>Less-34(绕过添加斜杠)</strong><br>POST型的宽字节。<br><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">uname=0%df' union <span class="keyword">select</span> <span class="number">1</span>,<span class="keyword">database</span>()<span class="comment">#&amp;passwd=&amp;submit=Submit</span></span><br></pre></td></tr></table></figure></p>
 <p><img src="http://img-blog.csdnimg.cn/20191112210605106.jpg" alt="在这里插入图片描述"><br><strong>Less-35</strong><br>整型注入,不需要闭合<br><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">id=0 union <span class="keyword">select</span> <span class="number">1</span>,<span class="number">2</span>,<span class="keyword">database</span>() <span class="comment">--+</span></span><br></pre></td></tr></table></figure></p>
@@ -243,7 +242,7 @@
 
             <div class="post-copyright">
     <div class="content">
-        <p>最后更新： 2019年11月12日 23:30</p>
+        <p>最后更新： 2019年11月12日 23:33</p>
         <p>原始链接： <a class="post-url" href="/2019/11/12/sqli-labs攻关4(Adv)(Less-23_Less-38)/" title="sqli-labs攻关4(Adv)(Less-23_Less-38)">https://qwzf.github.io/2019/11/12/sqli-labs攻关4(Adv)(Less-23_Less-38)/</a></p>
         <footer>
             <a href="https://qwzf.github.io">
@@ -363,7 +362,7 @@
 
     <aside class="post-toc-pos post-toc-top" id="post-toc">
         <nav class="post-toc-wrap">
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#前言"><span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#一、二次注入-Less-24"><span class="post-toc-text">一、二次注入(Less-24)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#二、GET型过滤敏感关键字注入-Less-23-Less-28a"><span class="post-toc-text">二、GET型过滤敏感关键字注入(Less-23-Less-28a)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#三、WAF绕过注入-Less-29-Less-31"><span class="post-toc-text">三、WAF绕过注入(Less-29-Less-31)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#四、宽字节注入-Less-32-Less-38"><span class="post-toc-text">四、宽字节注入(Less-32-Less-38)</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Less-32-绕过addslashes"><span class="post-toc-text">Less-32(绕过addslashes())</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#后记"><span class="post-toc-text">后记</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#前言"><span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#一、二次注入-Less-24"><span class="post-toc-text">一、二次注入(Less-24)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#二、GET型过滤敏感关键字注入-Less-23-Less-28a"><span class="post-toc-text">二、GET型过滤敏感关键字注入(Less-23-Less-28a)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#三、WAF绕过注入-Less-29-Less-31"><span class="post-toc-text">三、WAF绕过注入(Less-29-Less-31)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#四、宽字节注入-Less-32-Less-38"><span class="post-toc-text">四、宽字节注入(Less-32-Less-38)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#后记"><span class="post-toc-text">后记</span></a></li></ol>
         </nav>
     </aside>
     
