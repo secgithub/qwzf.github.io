@@ -9,7 +9,7 @@
     <meta name="keywords" content="qwzf,Qwzf's Blog">
   
   <meta name="description" content="前言之前没有对SQL报错注入详细总结过，总结一下。 SQL报错注入利用前提: 页面上没有显示位，但是需要输出 SQL 语句执行错误信息。比如 mysql_error()优点: 不需要显示位缺点: 需要输出 mysql_error( )的报错信息 12种SQL报错注入语句1、通过floor报错,注入语句如下:and (select 1 from (select count(*),concat(use">
-<meta name="keywords" content="SQL,BUG,报错注入">
+<meta name="keywords" content="BUG,SQL,报错注入">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SQL注入-报错注入">
 <meta property="og:url" content="https://qwzf.github.io/2019/09/25/SQL注入-报错注入/index.html">
@@ -375,9 +375,9 @@
   <li class="article-footer-tags">
     <i class="fa fa-tags"></i>
       
-    <a href="/tags/SQL/" class="color4">SQL</a>
-      
     <a href="/tags/BUG/" class="color4">BUG</a>
+      
+    <a href="/tags/SQL/" class="color4">SQL</a>
       
     <a href="/tags/报错注入/" class="color5">报错注入</a>
       
@@ -596,5 +596,5 @@
 
 <script type="text/javascript" src="/js/clicklove.js"></script>
   </div>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script><script>!function(e){var r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function t(){for(var c=0;c<r.length;c++)t=r[c],void 0,0<=(n=t.getBoundingClientRect()).top&&0<=n.left&&n.top<=(e.innerHeight||document.documentElement.clientHeight)&&function(){var t,n,e,i,o=r[c];t=o,n=function(){r=r.filter(function(t){return o!==t})},e=new Image,i=t.getAttribute("data-original"),e.onload=function(){t.src=i,n&&n()},e.src=i}();var t,n}t(),e.addEventListener("scroll",function(){!function(t,n){clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(n)},500)}(t,e)})}(this);</script></body>
+<script>!function(e){var r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function t(){for(var c=0;c<r.length;c++)t=r[c],void 0,0<=(n=t.getBoundingClientRect()).top&&0<=n.left&&n.top<=(e.innerHeight||document.documentElement.clientHeight)&&function(){var t,n,e,i,o=r[c];t=o,n=function(){r=r.filter(function(t){return o!==t})},e=new Image,i=t.getAttribute("data-original"),e.onload=function(){t.src=i,n&&n()},e.src=i}();var t,n}t(),e.addEventListener("scroll",function(){!function(t,n){clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(n)},500)}(t,e)})}(this);</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
 </html>
