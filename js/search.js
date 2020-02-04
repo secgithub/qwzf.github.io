@@ -1,1 +1,83 @@
-function initSearch(){var s,t=$("#keywords"),e=($("#back"),$("#search-container")),n=$("#search-result"),r=$("#search-tpl").html(),o="/content.json?v="+ +new Date;function a(t){var e="";e=t.length?t.map(function(t){return e=r,n={title:t.title,url:window.mihoConfig.root+"/"+t.path},e.replace(/\{\w+\}/g,function(t){var e=t.replace(/\{|\}/g,"");return n[e]||""});var e,n}).join(""):'<li class="search-result-item-tips"><p>No Result found!</p></li>',n.html(e),i(!0)}function i(t){t?e.addClass("search-container-show"):e.removeClass("search-container-show")}t.bind("input propertychange",function(t){var n=this.value.trim().toLowerCase();n?(function(e){if(s)e(s);else{var t=new XMLHttpRequest;t.open("GET",o,!0),t.onload=function(){if(200<=this.status&&this.status<300){var t=JSON.parse(this.response||this.responseText);s=t instanceof Array?t:t.posts,e(s)}else console.error(this.statusText)},t.onerror=function(){console.error(this.statusText)},t.send()}}(function(t){var e=[];t.forEach(function(t){(-1<t.title.toLowerCase().indexOf(n)||-1<t.text.toLowerCase().indexOf(n))&&e.push(t)}),a(e)}),t.preventDefault()):i(!1)})}
+function initSearch() {
+    var keyInput = $('#keywords'),
+        back = $('#back'),
+        searchContainer = $('#search-container'),
+        searchResult = $('#search-result'),
+        searchTpl = $('#search-tpl').html(),
+        JSON_DATA = '/content.json?v=' + (+ new Date()),
+        searchData;
+
+    function loadData(success) {
+        if (! searchData) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', JSON_DATA, true);
+            xhr.onload = function () {
+                if (this.status >= 200 && this.status < 300) {
+                    var res = JSON.parse(this.response||this.responseText);
+                    searchData = res instanceof Array ? res : res.posts;
+                    success(searchData);
+                } else {
+                    console.error(this.statusText);
+                }
+            };
+            xhr.onerror = function () {
+                console.error(this.statusText);
+            };
+            xhr.send();
+        } else {
+            success(searchData);
+        }
+    }
+
+    function tpl(html, data) {
+        return html.replace(/\{\w+\}/g, function (str) {
+            var prop = str.replace(/\{|\}/g, '');
+            return data[prop] || '';
+        });
+    }
+
+    function render(data) {
+        var html = '';
+        if (data.length) {
+            html = data.map(function (post) {
+                return tpl(searchTpl, {
+                    title: post.title,
+                    url: (window.mihoConfig.root + '/' + post.path)
+                });
+            }).join('');
+        } else {
+            html = '<li class="search-result-item-tips"><p>No Result found!</p></li>';
+        }
+        searchResult.html(html);
+        containerDisplay(true);
+    }
+    function containerDisplay(status) {
+        if (status) {
+            searchContainer.addClass('search-container-show')
+        } else {
+            searchContainer.removeClass('search-container-show')
+        }
+    }
+
+    function search(e) {
+        var keywords = this.value.trim().toLowerCase();
+        if (! keywords) {
+            containerDisplay(false);
+            return;
+        }
+
+        loadData(function (items) {
+            var results = [];
+            items.forEach( function(item) {
+                if (item.title.toLowerCase().indexOf(keywords) > -1 || item.text.toLowerCase().indexOf(keywords) > -1) {
+                    results.push(item);
+                }
+            });
+            render(results);
+        });
+
+        e.preventDefault();
+    }
+
+    keyInput.bind('input propertychange', search);
+};
