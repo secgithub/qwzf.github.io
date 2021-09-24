@@ -1714,11 +1714,11 @@
       
         <tags>
             
+            <tag> 靶场练习 </tag>
+            
             <tag> 导出文件注入 </tag>
             
             <tag> GET型盲注 </tag>
-            
-            <tag> 靶场练习 </tag>
             
         </tags>
       
@@ -1973,11 +1973,11 @@
       
         <tags>
             
-            <tag> 靶场练习 </tag>
-            
             <tag> GET型联合查询注入 </tag>
             
             <tag> GET型双查询注入 </tag>
+            
+            <tag> 靶场练习 </tag>
             
         </tags>
       
@@ -2120,9 +2120,9 @@
       
         <tags>
             
-            <tag> XSS绕过 </tag>
-            
             <tag> XSS基础 </tag>
+            
+            <tag> XSS绕过 </tag>
             
         </tags>
       
@@ -2273,11 +2273,11 @@
       
         <tags>
             
-            <tag> 函数 </tag>
-            
             <tag> 基本语法 </tag>
             
             <tag> 流程控制 </tag>
+            
+            <tag> 函数 </tag>
             
             <tag> 数组 </tag>
             
